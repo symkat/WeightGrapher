@@ -1,0 +1,16 @@
+---
+database:
+  skinquote: postgresql://{{ config.database.skinquote.user }}:{{ config.database.skinquote.pass }}@{{ config.database.skinquote.host }}/skinquote
+
+secrets:
+{% for secret in config.secrets %}
+  - {{ secret }}
+{% endfor %}
+
+smtp:
+  host: {{ config.smtp.host }} 
+  port: {{ config.smtp.port }}
+  sasl_username: {{ config.smtp.sasl_username }}
+  sasl_password: {{ config.smtp.sasl_password }}
+
+mkit_path: {{ config.mkit_path }}

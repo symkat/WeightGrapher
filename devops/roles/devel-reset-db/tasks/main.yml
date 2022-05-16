@@ -1,0 +1,43 @@
+---
+- name: Stop The WeightGrapher Service
+  service:
+    name: weightgrapher
+    state: stopped
+
+- name: Drop WeightGrapher database
+  postgresql_db:
+    name: "{{ config.database.weightgrapher.name }}"
+    state: absent
+  become_user: postgres
+  become: true
+
+- name: Create db user account for WeightGrapher
+  postgresql_user:
+    name: "{{ config.database.weightgrapher.user }}"
+    password: "{{ config.database.weightgrapher.pass }}"
+    state: present
+  become_user: postgres
+  become: true
+
+- name: Create WeightGrapher database
+  postgresql_db:
+    name: "{{ config.database.weightgrapher.name }}"
+    owner: "{{ config.database.weightgrapher.user }}"
+    state: present
+  become_user: postgres
+  become: true
+
+- name: Import the WeightGrapher database
+  shell: /home/manager/weightgrapher/Web/script/weightgrapher dbc < /home/manager/weightgrapher/DB/etc/schema.sql > /home/manager/weightgrapher/DB/etc/schema.log
+  environment:
+    PERL5LIB:            '/home/manager/perl5/lib/perl5'
+    PERL_MB_OPT:         '--install_base "/home/manager/perl5"'
+    PERL_MM_OPT:         'INSTALL_BASE=/home/manager/perl5'
+    PERL_LOCAL_LIB_ROOT: '/home/manager/perl5'
+  become: true
+  become_user: manager
+
+- name: Start WeightGrapher Service
+  service:
+    name: weightgrapher
+    state: started
