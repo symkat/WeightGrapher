@@ -171,7 +171,7 @@
   become_user: manager
 
 - name: Import the WeightGrapher database
-  shell: /home/manager/weightgrapher/Web/script/skin-quote dbc < /home/manager/weightgrapher/DB/etc/schema.sql > /home/manager/weightgrapher/DB/etc/schema.log
+  shell: /home/manager/weightgrapher/Web/script/weightgrapher dbc < /home/manager/weightgrapher/DB/etc/schema.sql > /home/manager/weightgrapher/DB/etc/schema.log
   environment:
     PATH:                '/home/manager/perl5/bin:/usr/local/bin:/usr/bin:/bin'
     PERL5LIB:            '/home/manager/perl5/lib/perl5'

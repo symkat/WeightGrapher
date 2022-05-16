@@ -1,6 +1,6 @@
 ---
 database:
-  skinquote: postgresql://{{ config.database.skinquote.user }}:{{ config.database.skinquote.pass }}@{{ config.database.skinquote.host }}/skinquote
+  weightgrapher: postgresql://{{ config.database.weightgrapher.user }}:{{ config.database.weightgrapher.pass }}@{{ config.database.weightgrapher.host }}/weightgrapher
 
 secrets:
 {% for secret in config.secrets %}
