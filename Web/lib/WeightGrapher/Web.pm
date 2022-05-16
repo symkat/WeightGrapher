@@ -80,6 +80,11 @@ sub startup ($self) {
     $auth->get ( '/password' )->to('UserSettings#change_password'    )->name('show_change_password' );
     $auth->post( '/password' )->to('UserSettings#do_change_password' )->name('do_change_password'   );
 
+    # Send requests for / to the dashboard.
+    $r->get('/')->to(cb => sub ($c) {
+        $c->redirect_to( $c->url_for('dashboard') );
+    });
+
     # User dashboard
     $auth->get( '/dashboard' )->to( 'Dashboard#index' )->name( 'show_dashboard' );
 
