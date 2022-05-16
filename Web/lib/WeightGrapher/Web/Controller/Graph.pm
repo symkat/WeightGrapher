@@ -22,5 +22,23 @@ sub do_create ($c) {
     $c->redirect_to( $c->url_for( 'show_dashboard' ) );
 }
 
+sub do_data ($c) {
+
+    my $value    = $c->param('value');
+    my $when     = $c->param('when');
+    my $graph_id = $c->param('graph_id');
+
+    my $graph = $c->db->graph($graph_id);
+
+    return unless $graph->person_id == $c->stash->{person}->id;
+
+
+    $graph->create_related('graph_datas', {
+        value => $value,
+        ts    => $when, 
+    });
+
+}
+
 
 1;
