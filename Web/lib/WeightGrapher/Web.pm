@@ -87,6 +87,10 @@ sub startup ($self) {
 
     # User dashboard
     $auth->get( '/dashboard' )->to( 'Dashboard#index' )->name( 'show_dashboard' );
+    
+    # User Create Graph
+    $auth->get ( '/graph'  )->to('Graph#create'            )->name('show_graph_create' );
+    $auth->post( '/graph'  )->to('Graph#do_create'         )->name('do_graph_create'   );
 
 }
 

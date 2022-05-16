@@ -7,7 +7,7 @@
   </ol>
 </nav>
 
-<h3 class="h3 mt-5 mb-3">Quotes</h3>
+<h3 class="h3 mt-5 mb-3">Graphs</h3>
 
 <table style="border: 1px solid #ccc" class="table mb-5">
     <tbody>
@@ -18,12 +18,13 @@
         </tr>
     </thead>
     <tbody>
-        % foreach my $quote ( @$quotes ) {
+        % foreach my $graph ( $person->search_related('graphs')->all ) {
         <tr>
-            <td><%= $quote->id %></td>
-            <td><%= $quote->data->{grand_total} %></td>
-            <td><a href="<%= $c->url_for( 'show_view_quote', { quote_uuid => $quote->id } ) %>">View Quote</a></td>
+            <td class="text-nowrap"><%= $graph->id %></td>
+            <td class="text-nowrap"><%= $graph->name %></td>
+            <td class="text-nowrap"><%= $graph->unit %></td>
         </tr>
+
         % }
     </tbody>
 </table>

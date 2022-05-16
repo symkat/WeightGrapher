@@ -29,9 +29,9 @@
                 </li>
             % }
             <li class="nav-item">
-                <a class="nav-link <%= $sb_active eq "quote" ? "active" : "" %>" href="<%= $c->url_for( 'show_quote_create' ) %>">
-                    <span data-feather="dollar-sign"></span>
-                    Quote
+                <a class="nav-link <%= $sb_active eq "graph" ? "active" : "" %>" href="<%= $c->url_for( 'show_graph_create' ) %>">
+                    <span data-feather="bar-chart-2"></span>
+                    Graph
                 </a>
             </li>
         </ul>
