@@ -141,6 +141,50 @@ __PACKAGE__->belongs_to(
 # Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-05-16 02:06:24
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:l7TWCGRUfYez4zo/q59IRA
 
+sub get_graph_data {
+    my ( $self ) = @_;
+
+    my $before = DateTime->now;
+    my $after  = DateTime->now->subtract( days => 30 );
+
+    my $dtf = $self->result_source->schema->storage->datetime_parser;
+
+    # Time span -
+    my $results = $self->search_related( 'graph_datas',
+        {
+            ts => {
+                '>' => [ $dtf->format_datetime($after)  ],
+                '<' => [ $dtf->format_datetime($before) ],
+            },
+        },
+        {
+            order_by => { -asc => 'ts' },
+        }
+    );
+    
+    my %data;
+    while ( defined ( my $result = $results->next ) ) {
+        $data{$result->ts->strftime("%Y-%m-%d")} = $result->value;
+    }
+    
+    my $stream  = [];
+    my $fullmap = [];
+    foreach my $day ( 0 .. $before->delta_days($after)->in_units('days') ) {
+        my $date = $after->strftime("%Y-%m-%d");
+        push @{$fullmap}, { date => $date, value => exists $data{$date} ? $data{$date} : undef };
+        push @{$stream}, exists $data{$date} 
+            ? $data{$date} 
+            : [];
+        $after->add( days => 1 );
+        print $after->strftime("%Y-%m-%d") . "\n";
+    }
+
+    return {
+        data    => \%data,
+        stream  => $stream,
+        fullmap => $fullmap,
+    };
+}
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;
