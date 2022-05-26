@@ -141,6 +141,42 @@ __PACKAGE__->belongs_to(
 # Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-05-16 02:06:24
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:l7TWCGRUfYez4zo/q59IRA
 
+use JSON::MaybeXS qw( encode_json );
+
+sub get_line_graph_chartjs {
+    my ( $self ) = @_;
+
+    my $data = $self->get_graph_data;
+
+    my $struct = {
+        labels   => $data->{datemap},
+        datasets => [
+            {
+                data        => [ map { $_->{value} ? +{ x => $_->{date}, y => $_->{value} } : (); } @{$data->{fullmap}} ],
+                fill        => 0,
+                borderColor => 'rgb(75, 192, 192)',
+                tension     => 0.1,
+                label       => 'weight',
+            },
+        ]
+    };
+
+    return $struct;
+}
+
+sub get_line_graph {
+    my ( $self ) = @_;
+
+    my $data = $self->get_graph_data;
+
+    return {
+        labels => $data->{datemap},
+        data   => [ map {
+            $_->{value} ? +{ x => $_->{date}, y => $_->{value} } : ();
+        } @{$data->{fullmap}} ],
+    };
+}
+
 sub get_graph_data {
     my ( $self ) = @_;
 
@@ -169,9 +205,11 @@ sub get_graph_data {
     
     my $stream  = [];
     my $fullmap = [];
+    my $datemap = [];
     foreach my $day ( 0 .. $before->delta_days($after)->in_units('days') ) {
         my $date = $after->strftime("%Y-%m-%d");
         push @{$fullmap}, { date => $date, value => exists $data{$date} ? $data{$date} : undef };
+        push @{$datemap}, $date;
         push @{$stream}, exists $data{$date} 
             ? $data{$date} 
             : [];
@@ -183,6 +221,7 @@ sub get_graph_data {
         data    => \%data,
         stream  => $stream,
         fullmap => $fullmap,
+        datemap => $datemap,
     };
 }
 

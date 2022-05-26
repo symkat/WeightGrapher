@@ -12,9 +12,9 @@
 % foreach my $graph ( $person->search_related('graphs')->all ) {
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title"><%= $graph->name %></h5>
+        <h5 class="card-title"><%= $graph->name %> - Line Graph</h5>
         <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-        <canvas id="myChart" width="400" height="200"></canvas>
+        <canvas id="myLineGraph" width="400" height="200"></canvas>
         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
         <a href="#" class="card-link">Card link</a>
         <a href="<%= $c->url_for( 'show_graph_editor', { graph_id => $graph->id } ) %>" class="card-link">Edit Graph</a>
@@ -22,71 +22,29 @@
 </div>
 % }
 
-
-
-
 <script>
-    const ctx = document.getElementById('myChart').getContext('2d');
+    const ctx = document.getElementById('myLineGraph').getContext('2d');
     // const labels = Utils.months({count: 7});
     const data = {
-      labels: [ 1, 2, 3, 4,5, 6, 7 ],
+      labels: [ 
+            % foreach my $date ( @{$graph_json->{labels}} ) { 
+                '<%= $date %>',
+            % }
+          ],
       datasets: [ 
-        {
-            label: 'Weight',
-            data: [65, 59, 63, 62, 56, 55, 60],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        },
-        {
-            label: 'none',
-            data: [ { x: 1, y: 65 }, { x: 1, y: 55 } ],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1,
-        },
-        {
-            label: 'none',
-            data: [ { x: 2, y: 59 }, { x: 2, y: 55 } ],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        },
-        {
-            label: 'none',
-            data: [ { x: 3, y: 63 }, { x: 3, y: 56 } ],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        },
-        {
-            label: 'none',
-            data: [ { x: 4, y: 62 }, { x: 4, y: 55 } ],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        },
-        {
-            label: 'none',
-            data: [ { x: 5, y: 56 }, { x: 5, y: 55 } ],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        },
-        {
-            label: 'none',
-            data: [ { x: 6, y: 55 }, { x: 6, y: 54 } ],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        },
-        {
-            label: 'none',
-            data: [ { x: 7, y: 60 }, { x: 7, y: 55 } ],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        },
+        % foreach my $ds ( @{$graph_json->{datasets}} ) { 
+            {
+                label: '<%= $ds->{label} %>',
+                data: [
+                    % foreach my $data ( @{$ds->{data}} ) { 
+                        { x: '<%= $data->{x} %>', y: <%= $data->{y} %>  },
+                    % }
+                ],
+                fill: <%= $ds->{fill} ? 'true' : 'false' %>,
+                borderColor: '<%= $ds->{borderColor} %>',
+                tension: <%= $ds->{tension} %>,
+            },
+        % }
     ]};
 
     const myChart = new Chart(ctx, {
@@ -105,6 +63,7 @@
         }
     });
 </script>
+
 
  
 
