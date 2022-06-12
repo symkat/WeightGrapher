@@ -22,6 +22,30 @@ sub do_create ($c) {
     $c->redirect_to( $c->url_for( 'show_dashboard' ) );
 }
 
+sub share ($c) {
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
+    my $graph_data = $c->stash->{graph_data} = $graph->get_graph_data;
+}
+
+sub data ($c) {
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
+    my $graph_data = $c->stash->{graph_data} = $graph->get_graph_data;
+}
+
+sub import ($c) {
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
+    my $graph_data = $c->stash->{graph_data} = $graph->get_graph_data;
+}
+
+sub export ($c) {
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
+    my $graph_data = $c->stash->{graph_data} = $graph->get_graph_data;
+}
+
 sub do_data ($c) {
 
     my $value    = $c->param('value');
