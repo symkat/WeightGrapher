@@ -3,6 +3,7 @@
 <nav aria-label="breadcrumb" class="mt-3 mb-3">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="<%= $c->url_for( 'show_dashboard' ) %>">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="<%= $c->url_for( 'show_dashboard' ) %>">Dashboard</a></li>
     <li class="breadcrumb-item active" aria-current="page">View All</li>
   </ol>
 </nav>
@@ -41,7 +42,6 @@
 </div>
 % }
 
-
 <form style="margin-top: 1.5em" method="POST" action="<%= $c->url_for( 'do_graph_create' ) %>">
     <%= include '_base/form/input', type => 'text', name => 'name',
         title => 'Graph name',
@@ -59,7 +59,28 @@
 </form>
 
 
+<h3 class="h3 mt-5 mb-3">Records</h3>
 
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Date</th>
+      <th scope="col">Value</th>
+      <th scope="col">Unit</th>
+    </tr>
+  </thead>
+  <tbody>
+% foreach my $data ( @{$graph->get_graph_datastream} ) {
+    <tr>
+        <th scope="row"><%= $data->{id} %></th>
+      <td><%= $data->{date} %></td>
+      <td><%= $data->{value} %></td>
+      <td><%= $graph->unit %></td>
+    </tr>
+% }
+  </tbody>
+</table>
 
 
 

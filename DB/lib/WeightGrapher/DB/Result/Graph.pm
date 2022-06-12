@@ -177,6 +177,16 @@ sub get_line_graph {
     };
 }
 
+sub get_graph_datastream {
+    my ( $self ) = @_;
+    
+    return [  map  {
+            +{ id => $_->id, date => $_->ts->strftime( "%F %T", value => $_->value ) }
+        } $self->search_related( 'graph_datas', { }, {  order_by => { -asc => 'ts' } } )->all
+    ];
+
+}
+
 sub get_graph_data {
     my ( $self ) = @_;
 
