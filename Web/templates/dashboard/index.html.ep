@@ -3,7 +3,7 @@
 <nav aria-label="breadcrumb" class="mt-3 mb-3">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="<%= $c->url_for( 'show_dashboard' ) %>">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">View All</li>
+    <li class="breadcrumb-item active" aria-current="page">Graphs</li>
   </ol>
 </nav>
 
@@ -18,10 +18,11 @@
     </div>
 
     <div class="card-footer">
-        <a href="<%= $c->url_for( 'show_graph_share',  { gid => $graph->id } ) %>" class="card-link">Share</a>
-        <a href="<%= $c->url_for( 'show_graph_data',   { gid => $graph->id } ) %>" class="card-link">Data</a>
-        <a href="<%= $c->url_for( 'show_graph_import', { gid => $graph->id } ) %>" class="card-link">Import</a>
-        <a href="<%= $c->url_for( 'show_graph_export', { gid => $graph->id } ) %>" class="card-link">Export</a>
+        <a href="<%= $c->url_for( 'show_graph_share',    { gid => $graph->id } ) %>" class="card-link">Share</a>
+        <a href="<%= $c->url_for( 'show_graph_data',     { gid => $graph->id } ) %>" class="card-link">Data</a>
+        <a href="<%= $c->url_for( 'show_graph_settings', { gid => $graph->id } ) %>" class="card-link">Settings</a>
+        <a href="<%= $c->url_for( 'show_graph_import',   { gid => $graph->id } ) %>" class="card-link">Import</a>
+        <a href="<%= $c->url_for( 'show_graph_export',   { gid => $graph->id } ) %>" class="card-link">Export</a>
     </div>
 </div>
 % }

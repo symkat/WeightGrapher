@@ -89,12 +89,14 @@ sub startup ($self) {
     $auth->get( '/dashboard'                 )->to('Dashboard#index'         )->name('show_dashboard'    );
     
     # User Create Graph
-    $auth->get ( '/graph'                )->to('Graph#create'          )->name('show_graph_create' );
-    $auth->post( '/graph'                )->to('Graph#do_create'       )->name('do_graph_create'   );
-    $auth->get ( '/graph/:gid/share'     )->to('Graph#share'           )->name('show_graph_share'  );
-    $auth->get ( '/graph/:gid/data'      )->to('Graph#data'            )->name('show_graph_data'   );
-    $auth->get ( '/graph/:gid/import'    )->to('Graph#import'          )->name('show_graph_import' );
-    $auth->get ( '/graph/:gid/export'    )->to('Graph#export'          )->name('show_graph_export' );
+    $auth->get ( '/graph'                )->to('Graph#create'          )->name('show_graph_create'   );
+    $auth->post( '/graph'                )->to('Graph#do_create'       )->name('do_graph_create'     );
+    $auth->get ( '/graph/:gid/share'     )->to('Graph#share'           )->name('show_graph_share'    );
+    $auth->post( '/graph/:gid/share'     )->to('Graph#do_share'        )->name('do_graph_share'      );
+    $auth->get ( '/graph/:gid/data'      )->to('Graph#data'            )->name('show_graph_data'     );
+    $auth->get ( '/graph/:gid/settings'  )->to('Graph#settings'        )->name('show_graph_settings' );
+    $auth->get ( '/graph/:gid/import'    )->to('Graph#import'          )->name('show_graph_import'   );
+    $auth->get ( '/graph/:gid/export'    )->to('Graph#export'          )->name('show_graph_export'   );
 
     $auth->post( '/graph/:graph_id/data' )->to('Graph#do_data'         )->name('do_graph_data'     );
 

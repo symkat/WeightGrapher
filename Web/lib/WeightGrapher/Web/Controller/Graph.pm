@@ -28,7 +28,21 @@ sub share ($c) {
     my $graph_data = $c->stash->{graph_data} = $graph->get_graph_data;
 }
 
+# Share gid with email address given if the email address given is a valid
+# account.
+sub do_share ($c) {
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
+    my $email      = $c->stash->{form_email} = $c->param('email');
+}
+
 sub data ($c) {
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
+    my $graph_data = $c->stash->{graph_data} = $graph->get_graph_data;
+}
+
+sub settings ($c) {
     my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
     my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
     my $graph_data = $c->stash->{graph_data} = $graph->get_graph_data;
