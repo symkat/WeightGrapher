@@ -9,9 +9,7 @@
   </ol>
 </nav>
 
-<p>Show the actual graph here....</p>
-
-%= include 'graph/_nav', page => 'export'
+%= include '_base/graph', graph => $graph, page => 'export'
 
 <p>Download a CSV file of your graph</p>
 

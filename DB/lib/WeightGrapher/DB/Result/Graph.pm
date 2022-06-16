@@ -191,7 +191,7 @@ sub get_graph_data {
     my ( $self ) = @_;
 
     my $before = DateTime->now;
-    my $after  = DateTime->now->subtract( days => 30 );
+    my $after  = DateTime->now->subtract( days => 60 );
 
     my $dtf = $self->result_source->schema->storage->datetime_parser;
 

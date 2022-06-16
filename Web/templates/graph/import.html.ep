@@ -9,9 +9,7 @@
   </ol>
 </nav>
 
-<p>Show the actual graph here....</p>
-
-%= include 'graph/_nav', page => 'import'
+%= include '_base/graph', graph => $graph, page => 'import'
 
 <form style="margin-top: 1.5em" method="POST" action="<%= $c->url_for( 'do_graph_create' ) %>">
 

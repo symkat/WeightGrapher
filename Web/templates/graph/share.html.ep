@@ -9,10 +9,7 @@
   </ol>
 </nav>
 
-<p>Show the actual graph here....</p>
-
-
-%= include 'graph/_nav', page => 'share'
+%= include '_base/graph', graph => $graph, page => 'share'
 
 <p>You can share your graph with other WeightGrapher users.</p>
 

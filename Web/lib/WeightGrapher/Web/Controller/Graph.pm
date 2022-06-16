@@ -25,7 +25,7 @@ sub do_create ($c) {
 sub share ($c) {
     my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
     my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
-    my $graph_data = $c->stash->{graph_data} = $graph->get_graph_data;
+    my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;
 }
 
 # Share gid with email address given if the email address given is a valid
@@ -39,25 +39,25 @@ sub do_share ($c) {
 sub data ($c) {
     my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
     my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
-    my $graph_data = $c->stash->{graph_data} = $graph->get_graph_data;
+    my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;
 }
 
 sub settings ($c) {
     my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
     my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
-    my $graph_data = $c->stash->{graph_data} = $graph->get_graph_data;
+    my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;
 }
 
 sub import ($c) {
     my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
     my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
-    my $graph_data = $c->stash->{graph_data} = $graph->get_graph_data;
+    my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;
 }
 
 sub export ($c) {
     my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
     my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
-    my $graph_data = $c->stash->{graph_data} = $graph->get_graph_data;
+    my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;
 }
 
 sub do_data ($c) {
