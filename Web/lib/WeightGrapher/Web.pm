@@ -91,9 +91,11 @@ sub startup ($self) {
     # User Create Graph
     $auth->get ( '/graph'                )->to('Graph#create'          )->name('show_graph_create'   );
     $auth->post( '/graph'                )->to('Graph#do_create'       )->name('do_graph_create'     );
+    $auth->get ( '/graph/:gid'           )->to('Graph#view'            )->name('show_graph'    );
     $auth->get ( '/graph/:gid/share'     )->to('Graph#share'           )->name('show_graph_share'    );
     $auth->post( '/graph/:gid/share'     )->to('Graph#do_share'        )->name('do_graph_share'      );
     $auth->get ( '/graph/:gid/data'      )->to('Graph#data'            )->name('show_graph_data'     );
+    $auth->get ( '/graph/:gid/data/edit' )->to('Graph#data_edit'       )->name('show_graph_data_edit');
     $auth->get ( '/graph/:gid/settings'  )->to('Graph#settings'        )->name('show_graph_settings' );
     $auth->get ( '/graph/:gid/import'    )->to('Graph#import'          )->name('show_graph_import'   );
     $auth->get ( '/graph/:gid/export'    )->to('Graph#export'          )->name('show_graph_export'   );

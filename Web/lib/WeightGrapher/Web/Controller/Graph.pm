@@ -22,6 +22,12 @@ sub do_create ($c) {
     $c->redirect_to( $c->url_for( 'show_dashboard' ) );
 }
 
+sub view ($c) {
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
+    my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;
+}
+
 sub share ($c) {
     my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
     my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
@@ -37,6 +43,12 @@ sub do_share ($c) {
 }
 
 sub data ($c) {
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
+    my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;
+}
+
+sub data_edit ($c) {
     my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
     my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
     my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;

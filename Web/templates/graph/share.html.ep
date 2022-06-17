@@ -9,19 +9,27 @@
   </ol>
 </nav>
 
-%= include '_base/graph', graph => $graph, page => 'share'
+<div class="card">
+    <div class="card-header">
+        %= include 'graph/_nav', page => 'share', graph => $graph
+    </div>
 
-<p>You can share your graph with other WeightGrapher users.</p>
+    <div class="card-body">
+        <h5 class="card-title"><%= $graph->name %> - Share This Graph</h5>
+        <h6 class="card-subtitle mb-2 text-muted">You can share your graph with other WeightGrapher users by entering their email address below. Your graph will display on their Dashboard.</h6>
 
 
-<form style="margin-top: 1.5em" method="POST" action="<%= $c->url_for( 'do_graph_share' ) %>">
+        <form style="margin-top: 1.5em" method="POST" action="<%= $c->url_for( 'do_graph_share' ) %>">
 
-    <%= include '_base/form/input', type => 'email', name => 'email',
-        title => 'Email Address',
-        help  => 'The email address of the person you\'d like to share the graph with',
-        value => $c->stash->{form_email}
-    %>
+            <%= include '_base/form/input', type => 'email', name => 'email',
+                title => 'Email Address',
+                help  => 'The email address of the person you\'d like to share the graph with',
+                value => $c->stash->{form_email}
+            %>
 
-    <button type="submit" class="btn btn-primary float-end">Share My Graph</button>
-</form>
+            <button type="submit" class="btn btn-primary float-end">Share My Graph</button>
+        </form>
+    </div>
+</div>
+
 

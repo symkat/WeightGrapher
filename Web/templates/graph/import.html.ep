@@ -9,17 +9,23 @@
   </ol>
 </nav>
 
-%= include '_base/graph', graph => $graph, page => 'import'
-
-<form style="margin-top: 1.5em" method="POST" action="<%= $c->url_for( 'do_graph_create' ) %>">
-
-    <div class="mb-3">
-        <label class="form-label" for="customFile">Select CSV File</label>
-        <input type="file" class="form-control" id="customFile" />
+<div class="card">
+    <div class="card-header">
+        %= include 'graph/_nav', page => 'import', graph => $graph
     </div>
 
-    <div class="mb-3">
-        <button type="submit" class="btn btn-primary float-end">Import Records</button>
-    </div>
-</form>
+    <div class="card-body">
+        <h5 class="card-title"><%= $graph->name %> - Import Data</h5>
+        <form style="margin-top: 1.5em" method="POST" action="<%= $c->url_for( 'do_graph_create' ) %>">
 
+            <div class="mb-3">
+                <label class="form-label" for="customFile">Select CSV File</label>
+                <input type="file" class="form-control" id="customFile" />
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary float-end">Import Records</button>
+            </div>
+        </form>
+    </div>
+</div>

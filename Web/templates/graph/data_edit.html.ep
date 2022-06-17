@@ -15,8 +15,8 @@
     </div>
 
     <div class="card-body">
-        <h5 class="card-title"><%= $graph->name %> - View Data</h5>
-        <h6 class="card-subtitle mb-2 text-muted">These are the records we have, you can <a href="<%= $c->url_for( 'show_graph_data_edit', gid => $graph->id ) %>">edit them here</a>.</h6>
+        <h5 class="card-title"><%= $graph->name %> - Edit Data</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Change records below, or <a href="<%= $c->url_for( 'show_graph_data', gid => $graph->id ) %>">go back</a>.</h6>
         <table class="table">
           <thead>
             <tr>
@@ -39,18 +39,3 @@
         </table>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
