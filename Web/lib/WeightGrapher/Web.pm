@@ -92,6 +92,7 @@ sub startup ($self) {
     $auth->get ( '/graph'                )->to('Graph#create'          )->name('show_graph_create'   );
     $auth->post( '/graph'                )->to('Graph#do_create'       )->name('do_graph_create'     );
     $auth->get ( '/graph/:gid'           )->to('Graph#view'            )->name('show_graph'    );
+    $auth->get ( '/graph/:gid/add'       )->to('Graph#add'             )->name('show_graph_add'    );
     $auth->get ( '/graph/:gid/share'     )->to('Graph#share'           )->name('show_graph_share'    );
     $auth->post( '/graph/:gid/share'     )->to('Graph#do_share'        )->name('do_graph_share'      );
     $auth->get ( '/graph/:gid/data'      )->to('Graph#data'            )->name('show_graph_data'     );

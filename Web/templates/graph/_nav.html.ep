@@ -1,7 +1,10 @@
 <!-- BEGIN graph/_nav.html.ep -->
 <ul class="nav nav-tabs mt-3 mb-3">
     <li class="nav-item">
-        <a class="nav-link <%= $page eq 'view' ? 'active' : '' %>" <%= $page eq 'share' ? 'aria-current=page' : '' %> href="<%= $c->url_for( 'show_graph', gid => $graph->id  ) %>"><span data-feather="user-plus"></span> View</a>
+        <a class="nav-link <%= $page eq 'view' ? 'active' : '' %>" <%= $page eq 'share' ? 'aria-current=page' : '' %> href="<%= $c->url_for( 'show_graph', gid => $graph->id  ) %>"><span data-feather="bar-chart-2"></span> View</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <%= $page eq 'add' ? 'active' : '' %>" <%= $page eq 'add' ? 'aria-current=page' : '' %> href="<%= $c->url_for( 'show_graph_add', gid => $graph->id  ) %>"><span data-feather="plus-circle"></span> Add</a>
     </li>
     <li class="nav-item">
         <a class="nav-link <%= $page eq 'share' ? 'active' : '' %>" <%= $page eq 'share' ? 'aria-current=page' : '' %> href="<%= $c->url_for( 'show_graph_share', gid => $graph->id  ) %>"><span data-feather="user-plus"></span> Share</a>
