@@ -100,6 +100,9 @@ sub startup ($self) {
     $auth->get ( '/graph/:gid/import'    )->to('Graph#import'          )->name('show_graph_import'   );
     $auth->get ( '/graph/:gid/export'    )->to('Graph#export'          )->name('show_graph_export'   );
 
+    $auth->post( '/graph/:gid/data/edit' )->to('Graph#data_edit'       )->name('do_graph_data_edit');
+
+
     $auth->post( '/graph/:graph_id/data' )->to('Graph#do_data'         )->name('do_graph_data'     );
 
 }

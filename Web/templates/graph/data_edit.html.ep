@@ -21,18 +21,38 @@
           <thead>
             <tr>
               <th scope="col">#</th>
+              <th scope="col">Delete</th>
               <th scope="col">Date</th>
               <th scope="col">Value</th>
               <th scope="col">Unit</th>
+              <th scope="col">Editor</th>
             </tr>
           </thead>
           <tbody>
         % foreach my $data ( @{$graph->get_graph_datastream} ) {
             <tr>
                 <th scope="row"><%= $data->{id} %></th>
+              <td>
+                    <form method="post" action="<%= $c->url_for( 'do_graph_data_edit', gid => $graph->id ) %>">
+                        <input type="hidden" name="data_id" value="<%= $data->{id} %>">
+                        <button style="margin-left: 1.5em" class="btn btn-sm btn-outline-danger">Delete Record</button>
+                    </form>
+                </td>
               <td><%= $data->{date} %></td>
               <td><%= $data->{value} %></td>
               <td><%= $graph->unit %></td>
+              <td>
+                    <form method="post" action="<%= $c->url_for( 'do_graph_data_edit', gid => $graph->id ) %>">
+                        <input type="hidden" name="data_id" value="<%= $data->{id} %>">
+
+                        <div class="input-group">
+                            <span class="input-group-text">Change To: </span>
+                            <input type="text" name="price" class="form-control" aria-label="Amount (to the nearest dollar)" value="<%= $data->{value} %>">
+                            <span class="input-group-text"><%= $graph->unit %></span>
+                            <button style="margin-left: 1.5em" class="btn btn-sm btn-outline-secondary">Update Record</button>
+                        </div>
+                    </form>
+                </td>
             </tr>
         % }
           </tbody>
