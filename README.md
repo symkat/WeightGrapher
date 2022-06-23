@@ -30,36 +30,3 @@ This may take a couple of hours to complete, once it has finished visit http://y
 
 ## Backup & Restore WeightGrapher
 
-# TODO
-
-[ ] Add POST handlers for each form to the graph controller
-
-[ ] Add bootstrap-datepicker to the "Add" graph UI
-
-[ ] Update the DB to support shared graphs
-
-[ ] Confirm behavior in panel for: "View"
-
-[ ] Confirm behavior in panel for: "Add"
-
-[ ] Confirm behavior in panel for: "Share"
-
-[ ] Confirm behavior in panel for: "Data"
-
-[ ] Confirm behavior in panel for: "Import"
-
-[ ] Confirm behavior in panel for: "Export"
-
-[ ] Confirm behavior in panel for: "Settings"
-
-[ ] Setting page to accept choice of graphing method (Line Graph, Ben's Graph)
-
-[ ] Settings page to accept default timezone for input
-
-[ ] Add Ben's Graphing code
-
-[ ] Confirm Old WeightGrapher exports can be imported into this
-
-[ ] Add a home page, contact, etc.
-
-
