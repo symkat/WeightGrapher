@@ -1,0 +1,19 @@
+weightgrapher:
+  hosts:
+    my.weight.grapher.server:
+      domain_name: my.weight.grapher.server
+      repo: https://github.com/symkat/WeightGrapher.git
+      database:
+        weightgrapher:
+          user: weightgrapher
+          pass: SomeSecurePasswordThatIsSuperSecret
+          name: weightgrapher
+          host: 127.0.0.1
+      smtp:
+        host: smtp.host
+        port: 25
+        sasl_username: username
+        sasl_password: password
+      secrets:
+        - SomeVeryLongAndSecretSecretToUseForCookiesInMojolicious
+      mkit_path: /home/manager/weightgrapher/mkits
