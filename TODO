@@ -1,5 +1,3 @@
-[ ] Add POST handlers for each form to the graph controller
-[ ] Add bootstrap-datepicker to the "Add" graph UI
 [ ] Update the DB to support shared graphs
 [ ] Confirm behavior in panel for: "View"
 [ ] Confirm behavior in panel for: "Add"
@@ -15,4 +13,4 @@
 [ ] Add a home page, contact, etc.
 [ ] Make an API so people can make other things feed data in:
     [ ] add data to already-created graph
-
+[ ] Add SSL via Let's Encrypt to ansible setup
