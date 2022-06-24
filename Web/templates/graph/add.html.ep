@@ -21,6 +21,11 @@
 
         <form style="margin-top: 1.5em" method="POST" action="<%= $c->url_for( 'do_graph_add' ) %>">
 
+            <div class="input-group date">
+                <input type="text" class="form-control">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+            </div>
+
             <%= include '_base/form/input', type => 'text', name => 'date',
                 title => 'Date',
                 help  => 'Record Date',
@@ -38,4 +43,7 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    $('form .input-group.date').datepicker({});
+</script>
 
