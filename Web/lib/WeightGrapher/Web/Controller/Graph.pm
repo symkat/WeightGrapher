@@ -96,5 +96,16 @@ sub do_data ($c) {
 
 }
 
+sub do_graph_share ($c) {
+
+}
+
+sub do_graph_add ($c) {
+
+}
+
+sub do_graph_data_edit ($c) {
+
+}
 
 1;
