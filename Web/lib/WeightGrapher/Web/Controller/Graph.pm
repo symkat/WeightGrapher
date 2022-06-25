@@ -60,6 +60,44 @@ sub data_edit ($c) {
     my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;
 }
 
+# Handle data edit requests from /graph/N/data/edit panel
+sub do_data_edit ($c) {
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $data_id    = $c->stash->{data_id}    = $c->param('data_id');
+    my $value      = $c->stash->{value}      = $c->param('value');
+
+    my $record = $c->db->graph_data($data_id);
+
+    # Only allow a user to update thier own graph data.
+    if ( $record->graph->person->id != $c->stash->{person}->id ) {
+        $c->redirect_to( $c->url_for( 'show_graph_data_edit', gid => $graph_id ) );
+        return;
+    }
+
+    $record->value( $value );
+    $record->update;
+
+    $c->redirect_to( $c->url_for( 'show_graph_data_edit', gid => $graph_id ) );
+}
+
+# Handle data delete requests from /graph/N/data/edit panel
+sub do_data_delete ($c) {
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $data_id    = $c->stash->{data_id}    = $c->param('data_id');
+
+    my $record = $c->db->graph_data($data_id);
+
+    # Only allow a user to delete thier own graph data.
+    if ( $record->graph->person->id != $c->stash->{person}->id ) {
+        $c->redirect_to( $c->url_for( 'show_graph_data_edit', gid => $graph_id ) );
+        return;
+    }
+
+    $record->delete;
+
+    $c->redirect_to( $c->url_for( 'show_graph_data_edit', gid => $graph_id ) );
+}
+
 sub settings ($c) {
     my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
     my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
@@ -101,10 +139,6 @@ sub do_graph_share ($c) {
 }
 
 sub do_graph_add ($c) {
-
-}
-
-sub do_graph_data_edit ($c) {
 
 }
 

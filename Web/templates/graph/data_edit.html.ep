@@ -33,7 +33,7 @@
             <tr>
                 <th scope="row"><%= $data->{id} %></th>
               <td>
-                    <form method="post" action="<%= $c->url_for( 'do_graph_data_edit', gid => $graph->id ) %>">
+                    <form method="post" action="<%= $c->url_for( 'do_graph_data_delete', gid => $graph->id ) %>">
                         <input type="hidden" name="data_id" value="<%= $data->{id} %>">
                         <button style="margin-left: 1.5em" class="btn btn-sm btn-outline-danger">Delete Record</button>
                     </form>
@@ -47,7 +47,7 @@
 
                         <div class="input-group">
                             <span class="input-group-text">Change To: </span>
-                            <input type="text" name="price" class="form-control" aria-label="Amount (to the nearest dollar)" value="<%= $data->{value} %>">
+                            <input type="text" name="value" class="form-control" aria-label="Amount (to the nearest dollar)" value="<%= $data->{value} %>">
                             <span class="input-group-text"><%= $graph->unit %></span>
                             <button style="margin-left: 1.5em" class="btn btn-sm btn-outline-secondary">Update Record</button>
                         </div>
