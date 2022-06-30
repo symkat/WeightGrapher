@@ -4,13 +4,14 @@ CREATE TABLE person (
     id                          serial          PRIMARY KEY,
     name                        text            not null,
     email                       citext          not null unique,
+    timezone                    text            not null,
     is_enabled                  boolean         not null default true,
     is_admin                    boolean         not null default false,
     created_at                  timestamptz     not null default current_timestamp
 );
 
 -- Settings for a given user.  | Use with care, add things to the data model when you should.
-create TABLE person_settings (
+CREATE TABLE person_settings (
     id                          serial          PRIMARY KEY,
     person_id                   int             not null references person(id),
     name                        text            not null,
@@ -44,7 +45,7 @@ CREATE TABLE graph (
     unit                        text            not null -- lb / kg / st
 );
 
-create TABLE graph_settings (
+CREATE TABLE graph_settings (
     id                          serial          PRIMARY KEY,
     graph_id                    int             not null references graph(id),
     name                        text            not null,
@@ -54,10 +55,11 @@ create TABLE graph_settings (
     CONSTRAINT unq_graph_id_name UNIQUE(graph_id, name)
 );
 
-create TABLE graph_data (
+CREATE TABLE graph_data (
     id                          serial          PRIMARY KEY,
     graph_id                    int             not null references graph(id),
     value                       numeric         not null,
+    note                        text            not null,
     ts                          timestamptz     not null default current_timestamp
 );
 
