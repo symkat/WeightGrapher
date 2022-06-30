@@ -54,6 +54,11 @@ __PACKAGE__->table("person");
   data_type: 'citext'
   is_nullable: 0
 
+=head2 timezone
+
+  data_type: 'text'
+  is_nullable: 0
+
 =head2 is_enabled
 
   data_type: 'boolean'
@@ -86,6 +91,8 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 0 },
   "email",
   { data_type => "citext", is_nullable => 0 },
+  "timezone",
+  { data_type => "text", is_nullable => 0 },
   "is_enabled",
   { data_type => "boolean", default_value => \"true", is_nullable => 0 },
   "is_admin",
@@ -187,8 +194,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-05-16 02:06:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CzBxB0hlieJn4gXBq4t3Jw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-06-30 00:14:59
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6dbMx822nkzaEOG5OAO2+A
 
 use Data::GUID;
 
