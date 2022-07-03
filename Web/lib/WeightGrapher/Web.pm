@@ -103,6 +103,7 @@ sub startup ($self) {
 
     $auth->post( '/graph/:gid/data/edit'   )->to('Graph#do_data_edit'      )->name('do_graph_data_edit');
     $auth->post( '/graph/:gid/data/delete' )->to('Graph#do_data_delete'    )->name('do_graph_data_delete');
+    $auth->post( '/graph/:gid/add'         )->to('Graph#do_add'            )->name('do_graph_add'    );
 
 
     $auth->post( '/graph/:graph_id/data' )->to('Graph#do_data'         )->name('do_graph_data'     );

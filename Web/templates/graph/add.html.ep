@@ -18,33 +18,43 @@
         <h5 class="card-title"><%= $graph->name %> - Add Record</h5>
         <h6 class="card-subtitle mb-2 text-muted">Add a data record.</h6>
 
+        % if ( $c->stash->{errors} ) {
+            <div style="margin-top: 2em" class="alert alert-danger" role="alert">
+                There were errors with your request that could not be resolved:
+                <ul>
+        %      for my $error ( @{$c->stash->{errors}} ) {
+                    <li><%= $error %></li>
+        %  } 
+                </ul>
+            </div>
+        %  }
 
         <form style="margin-top: 1.5em" method="POST" action="<%= $c->url_for( 'do_graph_add' ) %>">
 
             <div class="input-group mb-3">
                 <span class="input-group-text">My weight was</span>
-                <input type="text" class="form-control" placeholder="Weight" aria-label="Weight">
+                <input name="weight" type="text" class="form-control" placeholder="Weight" aria-label="Weight" value="<%= $c->stash->{form_weight} %>">
                 <span class="input-group-text"><%= $graph->unit %></span>
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">On</span>
-                <input id="form_date_field" type="text" class="form-control" placeholder="Date" aria-label="Date">
+                <input name="date" id="form_date_field" type="text" class="form-control" placeholder="Date" aria-label="Date" value="<%= $c->stash->{form_date} %>">
                 <span class="input-group-text">at</span>
-                <input type="text" class="form-control" placeholder="Hour" aria-label="Hour">
+                <input name="hour" type="text" class="form-control" placeholder="Hour" aria-label="Hour" value="<%= $c->stash->{form_hour} %>">
                 <span class="input-group-text">:</span>
-                <input type="text" class="form-control" placeholder="Minute" aria-label="Minute">
-                <select class="form-select" aria-label="Default select example">
-                    <option value="am" selected>AM</option>
-                    <option value="pm">PM</option>
+                <input name="minute" type="text" class="form-control" placeholder="Minute" aria-label="Minute" value="<%= $c->stash->{form_minute} %>">
+                <select name="am_pm" class="form-select" aria-label="Default select example">
+                    <option value="am" <%= $c->stash->{form_am_pm} eq 'am' ? "selected" : "" %>>AM</option>
+                    <option value="pm" <%= $c->stash->{form_am_pm} eq 'pm' ? "selected" : "" %>>PM</option>
                 </select>
 
-                <span class="input-group-text">PST</span>
+                <span class="input-group-text"><%= $c->stash->{person}->timezone %></span>
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Any Notes?</span>
-                <textarea class="form-control" aria-label="With textarea"></textarea>
+                <textarea name="note" class="form-control" aria-label="With textarea"><%= $c->stash->{form_note} %></textarea>
             </div>
             
             <button type="submit" class="btn btn-primary float-end">Add Record</button>

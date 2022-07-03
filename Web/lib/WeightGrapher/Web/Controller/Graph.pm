@@ -32,6 +32,19 @@ sub add ($c) {
     my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
     my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
     my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;
+
+    my $do = DateTime->now( time_zone => $c->stash->{person}->timezone );
+
+    my ( $hour, $am_pm ) = $do->hour < 12
+        ? ( $do->hour, 'am' )
+        : $do->hour > 12
+            ? ( $do->hour - 12, 'pm' )
+            : ( '12', 'pm' );
+    
+    $c->stash->{form_date}   = $do->mdy('/');
+    $c->stash->{form_hour}   = $hour;
+    $c->stash->{form_minute} = $do->minute;
+    $c->stash->{form_am_pm}  = $am_pm;
 }
 
 sub share ($c) {
@@ -138,8 +151,76 @@ sub do_graph_share ($c) {
 
 }
 
-sub do_graph_add ($c) {
+sub do_add ($c) {
+    # Set the same template as get handler.
+    $c->stash->{template} = 'graph/add';
 
+    # Graph
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
+
+    # Datapoint
+    my $value  = $c->stash->{form_weight} = $c->param('weight');
+    my $date   = $c->stash->{form_date}   = $c->param('date');
+    my $hour   = $c->stash->{form_hour}   = $c->param('hour');
+    my $minute = $c->stash->{form_minute} = $c->param('minute');
+    my $am_pm  = $c->stash->{form_am_pm}  = $c->param('am_pm');
+    my $note   = $c->stash->{form_note}   = $c->param('note');
+
+    push @{$c->stash->{errors}}, "Weight is required." unless $value;
+    push @{$c->stash->{errors}}, "Date is required."   unless $date;
+    push @{$c->stash->{errors}}, "Hour is required."   unless $hour;
+    push @{$c->stash->{errors}}, "Minute is required." unless $minute or $minute == 0;
+    push @{$c->stash->{errors}}, "AM/PM is required."  unless $am_pm;
+
+    return if $c->stash->{errors};
+
+    # Create the date object.
+    my $date_obj;
+    if ( $date =~ m|^(\d{2})/(\d{2})/(\d{4})$| ) {
+        my ( $month, $day, $year ) = ( $1, $2, $3 );
+        $date_obj =  DateTime->new(
+            month    => $month,
+            day      => $day,
+            year     => $year,
+            hour     => $hour,
+            minute   => $minute,
+            time_zone => $c->stash->{person}->timezone,
+        );
+    } else {
+        push @{$c->stash->{errors}}, "Date should be in MM/DD/YYYY format.";
+    }
+    
+    return if $c->stash->{errors};
+    
+    # Add the datapoint to the graph
+    $graph->create_related( 'graph_datas', {
+        value => $value,
+        ts    => $date_obj,
+        ( $note ? ( note => $note ) : () ),
+    });
 }
 
 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
