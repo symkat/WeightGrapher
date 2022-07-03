@@ -14,11 +14,14 @@ sub do_register ( $c ) {
     my $email     = $c->stash->{form_email}            = $c->param('email');
     my $password  = $c->stash->{form_password}         = $c->param('password');
     my $p_confirm = $c->stash->{form_password_confirm} = $c->param('password_confirm');
+    my $tz_offset = $c->stash->{form_timezone_offset}  = $c->param('timezone_offset');
 
     push @{$c->stash->{errors}}, "Name is required"             unless $name;
     push @{$c->stash->{errors}}, "Email is required"            unless $email;
     push @{$c->stash->{errors}}, "Password is required"         unless $password;
     push @{$c->stash->{errors}}, "Confirm Password is required" unless $p_confirm;
+    push @{$c->stash->{errors}}, "Timezone Required"            unless $tz_offset;
+    push @{$c->stash->{errors}}, "Timezone invalid?"            unless $tz_offset =~ /^[+-]\d\d:\d\d$/;
 
     return if $c->stash->{errors};
 
@@ -33,16 +36,18 @@ sub do_register ( $c ) {
     my $person = try {
         $c->db->storage->schema->txn_do( sub {
             my $person = $c->db->resultset('Person')->create({
-                email => $c->param('email'),
-                name  => $c->param('name'),
+                email     => $c->param('email'),
+                name      => $c->param('name'),
+                timezone  => $c->param('timezone_offset'),
             });
             $person->new_related('auth_password', {})->set_password($c->param('password'));
             return $person;
         });
     } catch {
         push @{$c->stash->{errors}}, "Account could not be created: $_";
-        return;
     };
+    
+    return if $c->stash->{errors};
 
     $c->session->{uid} = $person->id;
 
