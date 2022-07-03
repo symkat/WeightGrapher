@@ -58,7 +58,7 @@ __PACKAGE__->table("graph_data");
 =head2 note
 
   data_type: 'text'
-  is_nullable: 0
+  is_nullable: 1
 
 =head2 ts
 
@@ -81,7 +81,7 @@ __PACKAGE__->add_columns(
   "value",
   { data_type => "numeric", is_nullable => 0 },
   "note",
-  { data_type => "text", is_nullable => 0 },
+  { data_type => "text", is_nullable => 1 },
   "ts",
   {
     data_type     => "timestamp with time zone",
@@ -120,8 +120,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-06-30 00:14:59
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xLsdHcCY0TkeKSGJtvjwZw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-07-03 20:06:23
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:wcmWBU/MRw3sGY5jO7r1Iw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

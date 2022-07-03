@@ -59,7 +59,7 @@ CREATE TABLE graph_data (
     id                          serial          PRIMARY KEY,
     graph_id                    int             not null references graph(id),
     value                       numeric         not null,
-    note                        text            not null,
+    note                        text            ,
     ts                          timestamptz     not null default current_timestamp
 );
 
