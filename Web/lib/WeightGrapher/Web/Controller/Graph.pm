@@ -185,6 +185,28 @@ sub export ($c) {
     my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;
 }
 
+sub do_export ($c) {
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
+
+    my @input = map { { date => $_->ts, weight => $_->value } }
+        $graph->search_related( 'graph_datas', {  }, { order_by => { -asc => 'ts' } } )->all;
+
+    my $file = '"Date","Weight"' . "\n";
+    for my $elem ( @input ) {
+        $file .= sprintf( "\"%s\",\"%.2f\"\n",
+            $elem->{date}->ymd("-"),
+            $elem->{weight}
+        );
+    }
+
+    $c->res->headers->content_disposition('attachment; filename=weightgrapher_records.csv' );
+    $c->render(
+        data   => $file,
+        format => 'text/csv',
+    );
+}
+
 sub do_data ($c) {
 
     my $value    = $c->param('value');

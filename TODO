@@ -1,19 +1,9 @@
-[ ] Complete interface  in panel for: "Add"
-    [ ] Add notes to DB for data points 
-    [ ] Automatically fill in the date, hour, minute based on the user's time
-    [ ] Ensure form submitted adds a data point
 [ ] Update the DB to support shared graphs
 [ ] Confirm behavior in panel for: "View"
 [ ] Confirm behavior in panel for: "Share"
-[ ] Confirm behavior in panel for: "Import"
-[ ] Confirm behavior in panel for: "Export"
 [ ] Confirm behavior in panel for: "Settings"
-    [ ] Add timezone selector for the graph input
-    [ ] Update add panel to use the user-configured time zone 
 [ ] Setting page to accept choice of graphing method (Line Graph, Ben's Graph)
-[ ] Settings page to accept default timezone for input
 [ ] Add Ben's Graphing code
-[ ] Confirm Old WeightGrapher exports can be imported into this
 [ ] Add a home page, contact, etc.
 [ ] Make an API so people can make other things feed data in:
     [ ] add data to already-created graph
