@@ -2,6 +2,7 @@ requires 'Mojolicious';
 requires 'Mojo::Pg';
 requires 'Mojo::File';
 requires 'DateTime::Format::Pg';
+requires 'Text::CSV';
 
 test_requires "Test::More";
 test_requires "Test::Deep";

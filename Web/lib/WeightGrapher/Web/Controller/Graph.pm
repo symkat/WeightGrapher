@@ -2,6 +2,7 @@ package WeightGrapher::Web::Controller::Graph;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 use Try::Tiny;
 use DateTime;
+use Text::CSV;
 
 sub do_create ($c) {
     $c->stash->{template} = 'graph/create';
@@ -123,6 +124,61 @@ sub import ($c) {
     my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;
 }
 
+sub do_import ($c) {
+    my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
+    my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
+
+    my $content = $c->req->upload( 'csv' )->slurp;
+
+    # CSV Implementation
+    my $csv = Text::CSV->new( { binary => 1 } );
+    my ( @results, @elems );
+    foreach my $line  ( split /\n/, $content ) {
+        my $row = $csv->parse( $line );
+        my ( $day, $month, $year, $weight );
+
+        # Try to get the weight and date from the CSV fields.
+        for my $elem ( $csv->fields ) {
+            $c->log->info( "Looking at $elem" );
+            if ( ! $day ) {
+
+                # MM DD YYYY, with seperators of / or - and allowing single or double quotes around
+                # the value.
+                if ( $elem =~ m|^(?:"\|)(\d{1,2})(?:/\|-)(\d{1,2})(?:/\|-)(\d{4})(?:"\|)| ) {
+                    ( $month, $day, $year ) = ( $1, $2, $3 );
+
+                # YYYY MM DD, with seperators of / or - and allowing single or double quotes around
+                # the value.
+                } elsif ( $elem =~ m|^(?:"\|)(\d{4})(?:/\|-)(\d{1,2})(?:/\|-)(\d{1,2})(?:"\|)| ) {
+                    ( $year, $month, $day ) = ( $1, $2, $3 );
+                }
+            }
+            if ( $elem =~ /^(?:"|'|)(\d+\.?\d*)(?:"|'|)\s*(?:lbs?|pounds?|kgs?|kilograms?|)\s*$/i ) {
+                $weight = $1;
+            }
+        }
+
+        next unless $day && $weight;
+
+        # Create the date object.
+        my $date_obj =  DateTime->new(
+            month    => $month,
+            day      => $day,
+            year     => $year,
+            hour     => 6,
+            minute   => 0,
+            time_zone => $c->stash->{person}->timezone,
+        );
+    
+        # Add the datapoint to the graph
+        $graph->create_related( 'graph_datas', {
+            value => $weight,
+            ts    => $date_obj,
+        });
+    }
+    $c->redirect_to( $c->url_for( 'show_graph', { gid => $graph->id } ) );
+}
+
 sub export ($c) {
     my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
     my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
@@ -202,25 +258,4 @@ sub do_add ($c) {
 }
 
 1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
