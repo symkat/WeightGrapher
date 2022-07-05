@@ -11,7 +11,7 @@
 
 % foreach my $graph ( $person->search_related('graphs')->all ) {
 
-    %= include '_base/graph', graph => $graph
+    %= include '_base/graph', graph => $graph, page => 'view'
 
 % }
 
