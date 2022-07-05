@@ -27,6 +27,7 @@ sub view ($c) {
     my $graph_id   = $c->stash->{graph_id}   = $c->param('gid');
     my $graph      = $c->stash->{graph}      = $c->db->graph($graph_id);
     my $graph_json = $c->stash->{graph_json} = $graph->get_line_graph_chartjs;
+    my $graph_ben  = $c->stash->{graph_ben}  = $graph->get_bens_graph;
 }
 
 sub add ($c) {

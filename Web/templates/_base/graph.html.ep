@@ -10,6 +10,8 @@
         <canvas id="myLineGraph" width="400" height="200"></canvas>
     </div>
 
+    %= dumper $graph_ben
+
 </div>
 
 <script>

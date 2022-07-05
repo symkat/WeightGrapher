@@ -187,6 +187,84 @@ sub get_graph_datastream {
 
 }
 
+use DateTime;
+use WeightGrapher::Math::ComplexWeightAverager;
+sub get_bens_graph {
+    my ( $self ) = @_;
+
+    # Construct @fake_dps from the real data...
+
+    #    push @fake_dps, {
+    #        day => $day,                              # The length of time, in seconds, we consider to be one day.
+    #        ts => $start_ts + $day * $day_length,     # Unix time stamp
+    #        value => fake_weight($ts),                # Value of the user's weight
+    #    };
+    #
+
+    push my @fake_dps, map  { +{ 
+        day   => 24*60*60,
+        ts    => $_->ts->epoch,
+        value => $_->value,
+    } } $self->search_related( 'graph_datas', { }, {  order_by => { -asc => 'ts' } } )->all;
+
+    my @graph_points;
+
+    # NOTE: end_ts was replaced with the 7 days from now, start_ts was removed.
+
+    my $averager = WeightGrapher::Math::ComplexWeightAverager->new(data => \@fake_dps);
+    my @trend = $averager->trend_timeseries(map {$_->{ts}} @fake_dps);
+    my $corrected_timeseries = $averager->{corrected_timeseries};
+    my $corrected_data = $corrected_timeseries->{data};
+
+    my @correction_by_dow = (0, 0, 0, 0, 0, 0, 0);
+
+    my $count_trend_lower = 0;
+    my $total_trend_higher = 0;
+    for my $i (0..$#$corrected_data) {
+        my $day = $fake_dps[$i]->{day};
+        my $measured_weight = $fake_dps[$i]{value};
+        my $corrected_weight = $corrected_data->[$i]{value};
+        my $correction = $corrected_weight - $measured_weight;
+        my $trend_weight = $trend[$i];
+        my $predicted_final = $corrected_timeseries->predict_from_dp($corrected_data->[$i], DateTime->now->add( days => 7 )->epoch);
+        my $day_of_week = $day % 7;
+        $correction_by_dow[$day_of_week] = $correction;
+
+        push @graph_points, {
+            day              => $day,
+            measured_weight  => $measured_weight,
+            corrected_weight => $corrected_weight,
+            trend            => $trend[$i],
+            predicted_final  => $predicted_final,
+            dow_correction_0 => $correction_by_dow[0],
+            dow_correction_1 => $correction_by_dow[1],
+            dow_correction_2 => $correction_by_dow[2],
+            dow_correction_3 => $correction_by_dow[3],
+            dow_correction_4 => $correction_by_dow[4],
+            dow_correction_5 => $correction_by_dow[5],
+            dow_correction_6 => $correction_by_dow[6],
+        };
+
+        #printf("%4i: meas %3.2f, adj %3.2f, trend %3.4f, final %3.2f [", $day, $measured_weight, $corrected_weight, $trend[$i], $predicted_final);
+        #for my $i (0..6) {
+        #    printf "% 1.2f,", $correction_by_dow[$i];
+        #}
+        #print "]\n";
+
+        $total_trend_higher += $trend[$i] - $corrected_weight;
+        if ($trend[$i] < $corrected_weight) {
+            $count_trend_lower++;
+        }
+    }
+
+    my $average_trend_higher = $total_trend_higher / @$corrected_data;
+
+    return {
+        average_trend_higher => $average_trend_higher,
+        graph_points         => [ @graph_points ],
+    };
+}
+
 sub get_graph_data {
     my ( $self ) = @_;
 
